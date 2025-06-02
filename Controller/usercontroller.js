@@ -18,15 +18,16 @@ const getUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    const {id} = req.query
-    const payload = req.body
-    const updatedUser = await userModel.findById(id, {...payload}, {new:true})
-    return res.json(updatedUser) 
+    const { id } = req.params;
+    const payload = req.body;
+    const updatedUser = await userModel.findByIdAndUpdate(id, payload, { new: true });
+    return res.json(updatedUser);
 };
 
 const deleteUser = async (req, res) => {
-
-    return res.json(req.body) 
+    const { id } = req.params;
+    await userModel.findByIdAndDelete(id);
+    return res.json({ message: "User deleted successfully" });
 };
 
 module.exports = {createUser, loginUser, getUser, updateUser, deleteUser };
