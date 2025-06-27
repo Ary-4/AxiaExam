@@ -1,209 +1,28 @@
-require("dotenv").config();
-const express = require("express")
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const userroute = require("./Route/user.route");
-const mongoose = require("mongoose");
-const app = express()
+const app = express();
+app.use(express.json());
+
+// Import Routes
+const authRoutes = require('./routes/authRoutes');
+const testRoutes = require('./routes/test');
 
 
-mongoose.connect(process.env.MONGO_URL);
-app.use(express.json())
+// Use Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/test', testRoutes);
 
-
-app.use(userroute);
-app.listen(5000, () => {
-    console.log("App is running on port 5000")
+app.get('/', (req, res) => {
+  res.send('Backend Exam 2 is running');
 });
 
-module.exports = userroute
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const students = [
-//     {id:1, name: "sam", email: "sam@gmail.com", password:"55555"},
-//     {id:2, name: "caesar", email: "caesar@gmail.com", password:"55555"},
-//     {id:3, name: "fey", email: "fey@gmail.com", password:"55555"},
-// ]
-
-// app.get("/", (req, res)=>{
-//     console.log(req.path)
-//     return res.json(students)
-// })
-
-// app.post("/", (req, res)=>{
-//     const payload = req.body;
-//     const newpayload = {id:students.length+1, ...payload}
-//     students.push(newpayload)
-//     return res.send("User created successfully")
-// })
-
-// app.put("/", (req, res)=>{
-//     const payload = req.body;
-//     const userPosition = students.findIndex((students)=> students.id == payload.id)
-//     students.splice(userPosition, 1, payload)
-//     return res.send("Account updated successfully")
-// })
-
-// app.delete("/", (req, res)=>{
-//     const payload = req.body;
-//     const userPosition = students.findIndex((students)=> students.id == payload.id)
-//     students.splice(userPosition, 1)
-//     return res.send("User Deleted")
-// })
-
-
-// app.listen(5000, ()=>{
-//     console.log("App is running in port 5000")
-// })
-
+// DB Connect
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
