@@ -6,13 +6,13 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if user exists
+    // Checking user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Compare passwords
+    // password match
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -21,7 +21,7 @@ exports.loginUser = async (req, res) => {
     // Generate token
     const token = jwt.sign(
       { userId: user._id, isAdmin: user.isAdmin },
-      'secretkey', // (you can move this to your .env later)
+      'secretkey', 
       { expiresIn: '1h' }
     );
 

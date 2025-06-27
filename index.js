@@ -16,7 +16,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/test', testRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Backend Exam 2 is running');
+  res.send('running');
 });
 
 // DB Connect

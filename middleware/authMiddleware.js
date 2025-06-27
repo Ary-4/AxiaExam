@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  // Check if token is present
+  // Checking token presence
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Access Denied. No token provided' });
   }
@@ -11,9 +11,9 @@ const verifyToken = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, 'secretkey'); // same key used in login
-    req.user = decoded; // attach user data to request
-    next(); // allow request to continue
+    const decoded = jwt.verify(token, 'secretkey'); // key used to login
+    req.user = decoded; // user data to request
+    next(); 
   } catch (err) {
     res.status(400).json({ message: 'Invalid Token' });
   }
